@@ -1,19 +1,13 @@
 import './App.css';
 import {Component} from 'react'
-import axios from 'axios'
+import Miles_dateTracker from './Components/Miles_dateTracker';
 
-class App extends Component {
-  constructor(){
-    super()
-
-  }
-  render(){
-    return(
-      <div>
-        <entries/>
-      </div>
-    )
-  }
+const App = () => {
+  return(
+    <div>
+      <Miles_dateTracker/>
+    </div>
+  )
 }
 
 export default App;
