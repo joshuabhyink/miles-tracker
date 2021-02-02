@@ -5,7 +5,7 @@ const MilesToOilChange = (props) => {
         return (
             <div>
                 {props.milesToOilChange}
-                <input placeholder='Enter mileage with new oil type...' onChange={e => props.updateOilChange(e.target.value)}/>
+                <input placeholder='Enter mileage with new oil type...' value={props.milesToOilChange} onChange={e => props.updateOilChange(e.target.value)}/>
                 <button onClick={props.updateMilesToOilChange}>Change Miles With Different Oil Type</button>
             </div>
         )
