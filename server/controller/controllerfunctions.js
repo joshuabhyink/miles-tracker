@@ -1,5 +1,4 @@
 let trips = []
-// let trip = {id: 1, miles: 20, date: ''}
 
 let id = 1
 let milesToOilChange = '6000'
@@ -17,6 +16,7 @@ module.exports = {
         res.status(200).send(milesToOilChange)
     },
     updateTrip: (req, res) => {
+        console.log(req.body)
         const updateId = req.params.id
         const index = trips.findIndex(trip => trip.id === +updateId)
         let trip = trips[index]

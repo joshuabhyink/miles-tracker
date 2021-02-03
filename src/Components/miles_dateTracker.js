@@ -8,10 +8,10 @@ class miles_dateTracker extends Component {
     super();
     this.state = {
       trips: [],
-      miles: "",
+      miles: 0,
       date: "",
       milesToOilChange: null,
-      milesToOilChangeInput: null
+      milesToOilChangeInput: null,
     };
   }
 
@@ -19,8 +19,8 @@ class miles_dateTracker extends Component {
     this.readTrip();
     this.readMilesToOilChange();
     this.setState({
-        milesToOilChange: 6000
-    })
+      milesToOilChange: 6000,
+    });
   }
   readTrip = () => {
     axios
@@ -61,8 +61,8 @@ class miles_dateTracker extends Component {
       });
   };
   updateTrip = (id) => {
-    const {miles, date} = this.state
-    const trip = {miles, date}
+    const index = this.state.trips.findIndex(trip => trip.id === id)
+    const trip = this.state.trips[index]
     axios
       .put(`/api/trips/${id}`, trip)
       .then((res) => {
@@ -80,7 +80,7 @@ class miles_dateTracker extends Component {
       .then((res) => {
         this.setState({
           milesToOilChange: res.data,
-          milesToOilChangeInput: ''
+          milesToOilChangeInput: "",
         });
       })
       .catch((err) => {
@@ -88,11 +88,11 @@ class miles_dateTracker extends Component {
       });
   };
   deleteTrip = (id) => {
-      const {miles, date} = this.state
-      const trip = {miles, date}
-      this.state.trips.findIndex(id => {
-        this.state.trips.splice(id, 1)
-      })
+    const { miles, date } = this.state;
+    const trip = { miles, date };
+    this.state.trips.findIndex((id) => {
+      this.state.trips.splice(id, 1);
+    });
     axios
       .delete(`/api/trips/${id}`, trip)
       .then((res) => {
@@ -108,29 +108,47 @@ class miles_dateTracker extends Component {
     this.setState({
       milesToOilChange: value,
     });
-  }
+  };
   handleMileInput = (e) => {
     this.setState({
-        milesToOilChangeInput: e.target.value
-    })
-  }
+      milesToOilChangeInput: e.target.value,
+    });
+  };
   handleMilesChange = (e) => {
-    // this.createTrip()
     this.setState({
       miles: e.target.value,
     });
-    // return this.state.milesToOilChane - this.state.trips.miles
-  }
+  };
   handleDateChange(e) {
-    // this.createTrip(this.state.trips.date)
     this.setState({
       date: e.target.value,
     });
   }
+  updateTripMiles = (id, value) => {
+      const index = this.state.trips.findIndex(trip => trip.id === id)
+      let copyArray = this.state.trips.slice()
+      let trip = copyArray[index]
+      trip.miles = +value
+      copyArray.splice(index, 1, trip)
+      this.setState({
+          trips: copyArray
+      })
+      
+  }
+  updateTripDate = (id, value) => {
+    const index = this.state.trips.findIndex(trip => trip.id === id)
+    let copyArray = this.state.trips.slice()
+    let trip = copyArray[index]
+    trip.date = value
+    copyArray.splice(index, 1, trip)
+    this.setState({
+        trips: copyArray
+    })
+  }
 
   render() {
     const mappedTrips = this.state.trips.map((trip) => {
-        console.log(trip)
+      console.log(trip);
       return (
         <Populateddata
           key={trip.id}
@@ -138,9 +156,14 @@ class miles_dateTracker extends Component {
           createTrip={this.createTrip}
           updateTrip={this.updateTrip}
           deleteTrip={this.deleteTrip}
+          updateTripMiles={this.updateTripMiles}
+          updateTripDate={this.updateTripDate}
         />
       );
     });
+    const reduce = this.state.trips.reduce((acc, cur) => {acc += cur.miles},0)
+    console.log(reduce)
+    const totalMiles = this.state.milesToOilChange - this.state.trips.reduce((acc, cur) => {acc += +cur.miles},0)
     return (
       <div>
         <input
@@ -152,9 +175,9 @@ class miles_dateTracker extends Component {
           onChange={(e) => this.handleDateChange(e)}
         />
         <button onClick={(e) => this.createTrip()}>Enter</button>
-        {/* <button onClick={e => this.deleteTrip()}>Delete Trip</button> */}
 
         {mappedTrips}
+        <p>Miles To Next Oil Change: {totalMiles}</p>
         <MilesToOilChange
           updateMilesToOilChange={this.updateMilesToOilChange}
           updateOilChange={this.updateOilChange}
