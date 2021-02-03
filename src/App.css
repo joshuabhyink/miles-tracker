@@ -8,27 +8,67 @@
   height: 100vh;
 }
 .title{
-  margin-left: 43%;
+  margin-left: 37%;
+  padding-top: 2%;
+  font-weight: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .data{
-  /* margin-left: 37%; */
-  background-color: red;
   display: flex;
   flex-direction: column;
 }
 .inputMiles{
-  margin-left: 35%;
-  margin-top: 20%;
+  margin-left: 20%;
+  margin-top: 10%;
   width: 17vw;
 }
 .inputDate{
-  margin-top: .75%;
-  margin-left: 35%;
+  /* margin-top: .75%; */
+  margin-left: 20%;
   width: 17vw;
 }
 .enter{
-  margin-left: 53%;
+  margin-top: .5%;
+  margin-left: 43%;
+}
+.new-mileage{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* margin-top: 5vh; */
+  margin-right: 5%;
+  /* align-items: flex-end; */
 }
 .oilchange{
-
+  margin-left: 75%;
+}
+.oil-input{
+  width: 15vw;
+  margin-top: 1%;
+  margin-left: 75%;
+}
+.button-oilchange{
+  width: 15vw;
+  margin-left: 75%;
+  margin-top: 1%;
+}
+.data{
+  margin-left: 20%;
+}
+.inputs{
+  margin-top: 2%;
+}
+.delete{
+  margin-top: 2%;
+}
+.buttons{
+  display: flex;
+  flex-direction: column;
+}
+.delete-button{
+  width: 15.2vw;
+}
+.update-button{
+  width: 15.2vw;
+  margin-top: 2%;
 }

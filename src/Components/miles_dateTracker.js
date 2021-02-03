@@ -177,16 +177,15 @@ class miles_dateTracker extends Component {
           value={this.state.miles}
           className='inputMiles'
         />
+          <div>
+            <button className='enter' onClick={(e) => this.createTrip()}>Enter</button>
+          </div>
         <input
           placeholder="Type date here..."
           onChange={(e) => this.handleDateChange(e)}
           className='inputDate'
         />
-      <div>
-        <button className='enter' onClick={(e) => this.createTrip()}>Enter</button>
-      </div>
         {mappedTrips}
-        <p className='oilchange'>Miles To Next Oil Change: {this.state.totalMiles}</p>
         <MilesToOilChange
           updateMilesToOilChange={this.updateMilesToOilChange}
           updateOilChange={this.updateOilChange}
@@ -194,6 +193,7 @@ class miles_dateTracker extends Component {
           handleMilesChange={this.handleMilesChange}
           milesToOilChangeInput={this.state.milesToOilChangeInput}
           handleMileInput={this.handleMileInput}
+          totalMiles={this.state.totalMiles}
         />
       </div>
     );
