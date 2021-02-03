@@ -10,13 +10,17 @@ class miles_dateTracker extends Component {
       trips: [],
       miles: "",
       date: "",
-      milesToOilChange: 0,
+      milesToOilChange: null,
+      milesToOilChangeInput: null
     };
   }
 
   componentDidMount() {
     this.readTrip();
     this.readMilesToOilChange();
+    this.setState({
+        milesToOilChange: 6000
+    })
   }
   readTrip = () => {
     axios
@@ -56,9 +60,11 @@ class miles_dateTracker extends Component {
         console.log(err);
       });
   };
-  updateTrip = (id, miles, date) => {
+  updateTrip = (id) => {
+    const {miles, date} = this.state
+    const trip = {miles, date}
     axios
-      .put(`/api/trips/${id}`, { miles, date })
+      .put(`/api/trips/${id}`, trip)
       .then((res) => {
         this.setState({
           trips: res.data,
@@ -70,10 +76,11 @@ class miles_dateTracker extends Component {
   };
   updateMilesToOilChange = () => {
     axios
-      .put(`/api/oil/${this.state.milesToOilChange}`)
+      .put(`/api/oil/${this.state.milesToOilChangeInput}`)
       .then((res) => {
         this.setState({
           milesToOilChange: res.data,
+          milesToOilChangeInput: ''
         });
       })
       .catch((err) => {
@@ -81,8 +88,13 @@ class miles_dateTracker extends Component {
       });
   };
   deleteTrip = (id) => {
+      const {miles, date} = this.state
+      const trip = {miles, date}
+      this.state.trips.findIndex(id => {
+        this.state.trips.splice(id, 1)
+      })
     axios
-      .delete(`/api/trips/${id}`)
+      .delete(`/api/trips/${id}`, trip)
       .then((res) => {
         this.setState({
           trips: res.data,
@@ -97,12 +109,17 @@ class miles_dateTracker extends Component {
       milesToOilChange: value,
     });
   }
-  handleMilesChange(e) {
+  handleMileInput = (e) => {
+    this.setState({
+        milesToOilChangeInput: e.target.value
+    })
+  }
+  handleMilesChange = (e) => {
     // this.createTrip()
     this.setState({
       miles: e.target.value,
     });
-    // return this.state.milesToOilChange - this.state.trips.miles
+    // return this.state.milesToOilChane - this.state.trips.miles
   }
   handleDateChange(e) {
     // this.createTrip(this.state.trips.date)
@@ -113,6 +130,7 @@ class miles_dateTracker extends Component {
 
   render() {
     const mappedTrips = this.state.trips.map((trip) => {
+        console.log(trip)
       return (
         <Populateddata
           key={trip.id}
@@ -134,12 +152,16 @@ class miles_dateTracker extends Component {
           onChange={(e) => this.handleDateChange(e)}
         />
         <button onClick={(e) => this.createTrip()}>Enter</button>
+        {/* <button onClick={e => this.deleteTrip()}>Delete Trip</button> */}
 
         {mappedTrips}
         <MilesToOilChange
           updateMilesToOilChange={this.updateMilesToOilChange}
           updateOilChange={this.updateOilChange}
           milesToOilChange={this.state.milesToOilChange}
+          handleMilesChange={this.handleMilesChange}
+          milesToOilChangeInput={this.state.milesToOilChangeInput}
+          handleMileInput={this.handleMileInput}
         />
       </div>
     );
